@@ -1,0 +1,15 @@
+﻿{
+    "code": "movable",
+    "class": "simplepiston.movable",
+    "blockmaterial": "wood",
+    "behaviors": [{"name": "MovableByPiston"}],
+    "creativeinventory": { "general": [ "*" ] },
+    "textures": {
+        "all": { "base": "block/movable" }
+    },
+    "sounds": {
+        "place": "game:block/plant",
+        "break": "game:block/plant"
+    }
+
+}

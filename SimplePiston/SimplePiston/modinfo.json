@@ -1,0 +1,13 @@
+{
+    "type": "code",
+    "modid": "simplepiston",
+    "name": "Simple Piston",
+    "authors": [
+        "BluePixelDemon"
+    ],
+    "description": "A mod to provide a new block, the piston, that can move blocks",
+    "version": "1.0.0",
+    "dependencies": {
+        "game": ""
+    }
+}

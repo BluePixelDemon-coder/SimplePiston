@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplePiston", "SimplePiston\SimplePiston\SimplePiston.csproj", "{DEDACE72-CCF9-4AAD-B3CA-CC5C1BA4C2D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeBuild", "SimplePiston\ZZCakeBuild\CakeBuild.csproj", "{E5431F70-9BCA-45CC-8D9C-DF5809388C8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEDACE72-CCF9-4AAD-B3CA-CC5C1BA4C2D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEDACE72-CCF9-4AAD-B3CA-CC5C1BA4C2D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEDACE72-CCF9-4AAD-B3CA-CC5C1BA4C2D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEDACE72-CCF9-4AAD-B3CA-CC5C1BA4C2D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5431F70-9BCA-45CC-8D9C-DF5809388C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5431F70-9BCA-45CC-8D9C-DF5809388C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5431F70-9BCA-45CC-8D9C-DF5809388C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5431F70-9BCA-45CC-8D9C-DF5809388C8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,45 @@
+﻿{
+    "code": "piston",
+    "class": "simplepiston.piston",
+    "behaviors": [
+        {"name": "Piston"}, 
+        {"name": "OmniRotatable", "properties": {
+            "rotateSides": "true", 
+            "facing": "block"}},
+        {"name":  "WrenchOrientable", "properties":  {"baseCode": "piston"}
+        }
+    ],
+    "variantgroups": [
+        {
+            "code": "rotation", 
+            "loadFromPropertiesCombine": [
+                "abstract/horizontalorientation", "abstract/verticalorientation"
+            ]
+        }
+    ],
+    "entityclass": "pistonentity",
+    "blockmaterial": "wood",
+    "creativeinventory": { 
+        "general": [ "*north" ], 
+        "piston": ["*north"]
+    },
+    "shape": {
+        "base": "block/piston",
+        "rotateYByType": {
+            "*-north": 90,
+            "*-east": 0,
+            "*-south": 270,
+            "*-west": 180
+        },
+        "rotateZByType": {
+            "*-up": 90,
+            "*-down": 270
+        }
+    },
+    "maxstacksize": 64,
+    "sounds": {
+        "place": "game:block/plant",
+        "break": "game:block/plant"
+    }
+
+}
