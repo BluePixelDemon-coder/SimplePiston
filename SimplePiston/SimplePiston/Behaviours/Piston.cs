@@ -6,57 +6,9 @@ using Vintagestory.API.Server;
 
 namespace SimplePiston.Behaviours;
 
-[ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
-public class RequestMoveBlockPacket
-{
-    public BlockPos MoveFrom;
-    public BlockPos MoveTo;
-}
-
-public class NetworkSystem : ModSystem
-{
-    public override void Start(ICoreAPI api)
-    {
-        api.Network.RegisterChannel("piston")
-            .RegisterMessageType(typeof(RequestMoveBlockPacket));
-    }
-    #region Server
-
-    private IServerNetworkChannel _serverNetworkChannel;
-    private ICoreServerAPI _serverApi;
-
-    public override void StartServerSide(ICoreServerAPI api)
-    {
-        _serverApi = api;
-        _serverNetworkChannel = api.Network.GetChannel("piston")
-            .SetMessageHandler<RequestMoveBlockPacket>(OnRequestMoveBlock);
-    }
-
-    private void OnRequestMoveBlock(IServerPlayer fromplayer, RequestMoveBlockPacket packet)
-    {
-        Block blockToMove = _serverApi.World.BlockAccessor.GetBlock(packet.MoveFrom);
-        _serverApi.World.BlockAccessor.SetBlock(0, packet.MoveFrom);
-        _serverApi.World.BlockAccessor.SetBlock(blockToMove.BlockId, packet.MoveTo);
-        _serverApi.Logger.Notification("Received move block request from client");
-    }
-    #endregion
-    #region Client
-
-    private IClientNetworkChannel _clientNetworkChannel;
-    private ICoreClientAPI _clientApi;
-
-    public override void StartClientSide(ICoreClientAPI api)
-    {
-        _clientApi = api;
-        _clientNetworkChannel = api.Network.GetChannel("piston");
-    }
-
-    #endregion
-}
 
 public class Piston : BlockBehavior
 {
-    private NetworkSystem _networkSystem = new NetworkSystem();
     public Piston(Block block) : base(block)
     {
     }
@@ -99,22 +51,17 @@ public class Piston : BlockBehavior
         Block blockToPush = world.BlockAccessor.GetBlock(blockToPushPosition);
         if (blockToPush.BlockId == 0) // is the block air?
         {
-            world.Api.Logger.Notification("No block on north side of piston" + world.Api.Side);
-            return true;
+            world.Api.Logger.Notification("No block to push" + world.Api.Side);
+            return false;
         }
         
         if (world.BlockAccessor.GetBlock(newBlockPosition).IsReplacableBy(block))
         {
-            ((IClientNetworkChannel)byPlayer.Entity.Api.Network.GetChannel("piston")).SendPacket(new RequestMoveBlockPacket()
-            {
-                MoveFrom = blockToPushPosition,
-                MoveTo = newBlockPosition
-            });
-            //world.BlockAccessor.SetBlock(0, blockToPushPosition);
-            //world.BlockAccessor.SetBlock(blockToPush.BlockId, newBlockPosition);
+            world.BlockAccessor.SetBlock(0, blockToPushPosition);
+            world.BlockAccessor.SetBlock(blockToPush.BlockId, newBlockPosition);
         }
 
-        //handling = EnumHandling.PreventDefault;
+        handling = EnumHandling.PreventDefault;
         return true;
     }
 }

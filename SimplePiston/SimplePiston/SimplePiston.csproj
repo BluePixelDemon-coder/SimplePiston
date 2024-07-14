@@ -59,4 +59,11 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="assets\simplepiston\itemtypes\" />
+      <Folder Include="assets\simplepiston\shapes\item\" />
+      <Folder Include="assets\simplepiston\textures\item\" />
+      <Folder Include="Items\" />
+    </ItemGroup>
+
 </Project>

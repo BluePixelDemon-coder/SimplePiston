@@ -1,7 +1,6 @@
 ﻿using SimplePiston.Behaviours;
 using SimplePiston.BlockEntitys;
 using SimplePiston.Blocks;
-using SimplePiston.Items;
 using Vintagestory.API.Client;
 using Vintagestory.API.Server;
 using Vintagestory.API.Config;
@@ -20,10 +19,8 @@ public class SimplePistonModSystem : ModSystem
         api.RegisterBlockBehaviorClass("MovableByPiston", typeof(MovableByPiston));
         api.RegisterBlockBehaviorClass("Piston", typeof(Piston));
         api.RegisterBlockEntityClass("pistonentity", typeof(PistonEntity));
-        api.RegisterBlockClass(Mod.Info.ModID + ".trampoline", typeof(BlockTrampoline) );
         api.RegisterBlockClass(Mod.Info.ModID + ".piston", typeof(BlockPistonBase) );
         api.RegisterBlockClass(Mod.Info.ModID + ".movable", typeof(BlockMovable) );
-        api.RegisterItemClass(Mod.Info.ModID + ".thornsblade", typeof(ItemThornsBlade));
     }
 
     public override void StartServerSide(ICoreServerAPI api)
