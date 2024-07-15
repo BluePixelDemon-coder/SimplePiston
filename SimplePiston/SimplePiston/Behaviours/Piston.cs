@@ -1,7 +1,6 @@
-﻿using ProtoBuf;
-using Vintagestory.API.Client;
-using Vintagestory.API.Common;
+﻿using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
+using SimplePiston.Network;
 using Vintagestory.API.Server;
 
 namespace SimplePiston.Behaviours;
@@ -57,8 +56,32 @@ public class Piston : BlockBehavior
         
         if (world.BlockAccessor.GetBlock(newBlockPosition).IsReplacableBy(block))
         {
-            world.BlockAccessor.SetBlock(0, blockToPushPosition);
-            world.BlockAccessor.SetBlock(blockToPush.BlockId, newBlockPosition);
+            if (world.Api.Side == EnumAppSide.Server)
+            {
+                ICoreServerAPI serverApi = world.Api as ICoreServerAPI;
+                if (serverApi == null)
+                {
+                    return false;
+                }
+
+                BlockPos dimensionPosition =
+                    new BlockPos(blockToPushPosition.X, blockToPushPosition.Y, blockToPushPosition.Z, 1);
+                IMiniDimension dimension =
+                    serverApi.World.BlockAccessor.CreateMiniDimension(new Vec3d(dimensionPosition.X, dimensionPosition.Y, dimensionPosition.Z));
+                int dimensionId = serverApi.Server.LoadMiniDimension(dimension);
+                world.Logger.Notification("dimensionId from server: " + dimensionId);
+                dimension.subDimensionId = dimensionId;
+                dimension.CurrentPos.SetPos(dimensionPosition);
+                IServerNetworkChannel serverNetworkChannel = serverApi.Network.GetChannel("piston");
+                dimension.UnloadUnusedServerChunks();
+                serverNetworkChannel.SendPacket(new DimensionIdPacket()
+                {
+                    DimensionId = dimension.subDimensionId,
+                    CurrentPos = dimensionPosition
+                }, (IServerPlayer)byPlayer);
+            }
+            //world.BlockAccessor.SetBlock(0, blockToPushPosition);
+            //world.BlockAccessor.SetBlock(blockToPush.BlockId, newBlockPosition);
         }
 
         handling = EnumHandling.PreventDefault;
