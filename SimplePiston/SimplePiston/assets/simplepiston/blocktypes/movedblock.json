@@ -1,0 +1,9 @@
+{
+  "code": "movedblock",
+  "class": "entity",
+  "hitboxsize": {
+    "x": 1,
+    "y": 1
+  },
+  "falldamage": false
+}

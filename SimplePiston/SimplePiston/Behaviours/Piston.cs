@@ -1,6 +1,8 @@
-﻿using Vintagestory.API.Common;
+﻿using SimplePiston.Entity;
+using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using SimplePiston.Network;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
 
 namespace SimplePiston.Behaviours;
@@ -72,6 +74,8 @@ public class Piston : BlockBehavior
                 world.Logger.Notification("dimensionId from server: " + dimensionId);
                 dimension.subDimensionId = dimensionId;
                 dimension.CurrentPos.SetPos(dimensionPosition);
+                dimension.SetSelectionTrackingSubId_Server(dimensionId);
+                dimension.AdjustPosForSubDimension(dimensionPosition);
                 IServerNetworkChannel serverNetworkChannel = serverApi.Network.GetChannel("piston");
                 dimension.UnloadUnusedServerChunks();
                 serverNetworkChannel.SendPacket(new DimensionIdPacket()
@@ -79,6 +83,10 @@ public class Piston : BlockBehavior
                     DimensionId = dimension.subDimensionId,
                     CurrentPos = dimensionPosition
                 }, (IServerPlayer)byPlayer);
+                
+                Vintagestory.API.Common.Entities.Entity launched = EntityMovedBlock.CreateMovableBlock(serverApi, dimension);
+                launched.Pos.SetFrom(launched.ServerPos);
+                world.SpawnEntity(launched);
             }
             //world.BlockAccessor.SetBlock(0, blockToPushPosition);
             //world.BlockAccessor.SetBlock(blockToPush.BlockId, newBlockPosition);
