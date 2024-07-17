@@ -16,3 +16,10 @@ public class DimensionIdPacket
     public int DimensionId;
     public BlockPos CurrentPos;
 }
+
+[ProtoContract(ImplicitFields = ImplicitFields.AllPublic)]
+public class CreatedDimensionPacket
+{
+    public int BlockId;
+    public BlockPos BlockPos;
+};

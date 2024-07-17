@@ -4,6 +4,7 @@ using Vintagestory.API.MathTools;
 using SimplePiston.Network;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
+using Vintagestory.ServerMods.WorldEdit;
 
 namespace SimplePiston.Behaviours;
 
@@ -66,27 +67,21 @@ public class Piston : BlockBehavior
                     return false;
                 }
 
-                BlockPos dimensionPosition =
-                    new BlockPos(blockToPushPosition.X, blockToPushPosition.Y, blockToPushPosition.Z, 1);
-                IMiniDimension dimension =
-                    serverApi.World.BlockAccessor.CreateMiniDimension(new Vec3d(dimensionPosition.X, dimensionPosition.Y, dimensionPosition.Z));
+                IMiniDimension dimension = serverApi.World.BlockAccessor.CreateMiniDimension(blockToPushPosition.ToVec3d());
                 int dimensionId = serverApi.Server.LoadMiniDimension(dimension);
-                world.Logger.Notification("dimensionId from server: " + dimensionId);
                 dimension.subDimensionId = dimensionId;
-                dimension.CurrentPos.SetPos(dimensionPosition);
-                dimension.SetSelectionTrackingSubId_Server(dimensionId);
-                dimension.AdjustPosForSubDimension(dimensionPosition);
+                
                 IServerNetworkChannel serverNetworkChannel = serverApi.Network.GetChannel("piston");
-                dimension.UnloadUnusedServerChunks();
                 serverNetworkChannel.SendPacket(new DimensionIdPacket()
                 {
-                    DimensionId = dimension.subDimensionId,
-                    CurrentPos = dimensionPosition
+                    DimensionId = dimensionId,
+                    CurrentPos = blockToPushPosition
                 }, (IServerPlayer)byPlayer);
-                
-                Vintagestory.API.Common.Entities.Entity launched = EntityMovedBlock.CreateMovableBlock(serverApi, dimension);
-                launched.Pos.SetFrom(launched.ServerPos);
-                world.SpawnEntity(launched);
+            }
+
+            if (world.Api.Side == EnumAppSide.Client)
+            {
+                //IMiniDimension dimension = 
             }
             //world.BlockAccessor.SetBlock(0, blockToPushPosition);
             //world.BlockAccessor.SetBlock(blockToPush.BlockId, newBlockPosition);
